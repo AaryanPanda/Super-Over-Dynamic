@@ -47,6 +47,11 @@ p{
     align-items: center;
     
 }
+
+.balls p {
+color: black;
+font-size: 32px;
+}
 .scores {
      color: white;
      font-size: 30px;
