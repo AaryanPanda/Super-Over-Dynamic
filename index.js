@@ -8,21 +8,26 @@ const team2Wickets = document.getElementById("team2-wickets");
 const strikeAudio = new Audio("http://bit.ly/so-ball-hit");
 const gameOverAudio = new Audio("http://bit.ly/so-crowd-cheer");
 
-let numOfBalls = 0
+let numberOfBalls=0
 let numOfWickets1 = 0
 let numOfWickets2 = 0
-let scoreOfteam1 = 0
-let scoreOfteam2 = 0
-function updateValue(type, team, score) {
-    if (type === "wicket") {
-        const teamScoreElement = document.getElementById(`team${team}-wickets`)
-        teamScoreElement.innerHTML = score
-    }
-    else {
-        const teamScoreElement = document.getElementById(`team${team}-score`)
-        teamScoreElement.innerHTML = score
-    }
+let runsOfteam1 = 0
+let runsOfteam2 = 0
+
+// we are updating the wickets here
+
+function updateWickets(team, wickets) {
+     const teamWicketsElement = document.getElementById(`team${team}-wickets`)
+     teamWicketsElement.innerHTML = wickets
 }
+
+//we are updating the runs here
+function updateRuns(team, runs) {
+    const teamRunsElement = document.getElementById(`team${team}-runs`)
+    teamRunsElement.innerHTML = runs
+}
+let flag1 = true
+let flag2 = true
 
 sButton.addEventListener("click", handleSButton)
 function handleSButton() {
@@ -34,48 +39,54 @@ function handleSButton() {
 
     var ballElement = document.getElementsByClassName("balls")
     var paraelement = document.createElement("p")
-    if (numOfBalls < 12) {
+
+    if (numberOfBalls < 12) {
         if (randomNum == 7) {
             paraelement.innerText = "W"
-            if (numOfBalls < 6) {
+            if (numberOfBalls < 6) {
                 numOfWickets1 += 1
-                updateValue("wicket", 1, numOfWickets1)
+                updateWickets( 1, numOfWickets1)
             }
             else {
                 numOfWickets2 += 1
-                updateValue("wicket", 2, numOfWickets2)
+                updateWickets( 2, numOfWickets2)
             }
         }
-        else {
+        else  {
             paraelement.innerText = randomNum
-            if (numOfBalls < 6) {
-                scoreOfteam1 += randomNum
-                updateValue("score", 1, scoreOfteam1)
+            if (numberOfBalls < 6) {
+                runsOfteam1 += randomNum
+                updateRuns( 1, runsOfteam1)
             }
             else {
-                scoreOfteam2 += randomNum
-                updateValue("score", 2, scoreOfteam2)
+                runsOfteam2 += randomNum
+                updateRuns( 2, runsOfteam2)
             }
         }
 
-        ballElement[numOfBalls].appendChild(paraelement)
+        ballElement[numberOfBalls].appendChild(paraelement)
     }
 
-    numOfBalls += 1
+    numberOfBalls += 1
 
-    // if (numOfWickets1 === 2) {
-    //     numOfBalls = 6
-    // }
-    // else if (numOfWickets2 === 2) {
-    //     numOfBalls = 12
-    // }
+    if (numOfWickets1 === 2 && flag1==true) {
+        flag1 = false
+        numberOfBalls = 6
+    }
+    else if (numOfWickets2 === 2 && flag2==true) {
+        flag2 = false
+        numberOfBalls = 12
+    }
 
-    if (numOfBalls >= 12) {
-        if (team1Score > team2Score) {
+    if (numberOfBalls > 12) {
+        if (runsOfteam1 > runsOfteam2) {
             alert("Team 1 Wins!")
         }
-        else {
+        else if (runsOfteam1 < runsOfteam2) {
             alert("Team 2 Wins!")
+        }
+        else if (runsOfteam1 === runsOfteam2) {
+            alert("Match Draw!")
         }
     }
 
